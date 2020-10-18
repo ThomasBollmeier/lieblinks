@@ -14,6 +14,10 @@ class BookmarkController
             [
                 "url" => "http://coursera.org",
                 "description" => "Lernportal"
+            ],
+            [
+                "url" => "http://heise.de",
+                "description" => "Nachrichten rund um IT"
             ]
         ];
 
