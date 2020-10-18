@@ -1,0 +1,10 @@
+controller BookmarkController
+    actions
+        read <- get /api/bookmarks
+        create <- post /api/bookmarks/<slug>
+        update <- put /api/bookmarks/<slug>
+        delete <- delete /api/bookmarks/<slug>
+    end
+end
+
+default action HomeController#pageNotFound

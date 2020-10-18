@@ -1,0 +1,20 @@
+{
+  "name": "tbollmeier/lieblinks",
+  "description": "API to manage favorite web links",
+  "minimum-stability": "alpha",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Thomas Bollmeier",
+      "email": "developer@thomas-bollmeier.de"
+    }
+  ],
+  "autoload" : {
+    "psr-4" : {
+      "TBollmeier\\Lieblinks\\" : "lieblinks"
+    }
+  },
+  "require": {
+    "tbollmeier/webappfound": ">=v2.4.9"
+  }
+}

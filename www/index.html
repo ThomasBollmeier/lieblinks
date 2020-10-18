@@ -7,9 +7,14 @@
     <body>
         <main>
             <h1>Lieblinks</h1>
-            <form method="GET" action="api/lieblinks">
-                <input type="text" name=user><br>
-                <input type="submit" value="Submit">
+            <form method="GET" action="api/bookmarks">
+                <div>
+                    <label for="user">User: </label>
+                    <input type="text" id="user" name="user">
+                </div>
+                <div>
+                    <input type="submit" value="Submit">
+                </div>
             </form>
         </main>
     </body>

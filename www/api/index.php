@@ -1,6 +1,27 @@
 <?php
+require_once 'src/vendor/autoload.php';
+use TBollmeier\Lieblinks\Routing\Router;
 
-var_dump($_GET);
-//var_dump($_SERVER);
-//echo $_SERVER['REQUEST_METHOD'];
-//echo $_SERVER['QUERY_STRING'];
+$httpMethod = $_SERVER["REQUEST_METHOD"];
+
+$url = "/api/".$_GET['url'];
+
+$queryParams = $_GET;
+unset($queryParams['url']);
+$queryParamStr = implode("&", array_map(function ($key) use ($queryParams) {
+    return $key."=".$queryParams[$key];
+}, array_keys($queryParams)));
+
+if (!empty($queryParamStr)) {
+    $url .= "?$queryParamStr";
+}
+
+$router = new Router("TBollmeier\\Lieblinks\\Controller");
+
+try {
+    $router->route($httpMethod, $url);
+} catch (Exception $e) {
+    http_response_code(500);
+    echo $e->getMessage();
+}
+
