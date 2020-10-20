@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     readBookmarks().then(displayBookmarks);
 
+    $("#create-form").addEventListener("submit", onCreateFormSubmit);
+
 });
 
 function readBookmarks() {
@@ -14,7 +16,9 @@ function displayBookmarks(bookmarks) {
 
     const list = $('#lieblinks_list');
 
-    for (let child of list.childNodes) {
+    const children = [...list.childNodes];
+
+    for (let child of children) {
         list.removeChild(child);
     }
 
@@ -30,4 +34,18 @@ function displayBookmarks(bookmarks) {
         list.appendChild(li);
     }
 
+}
+
+function onCreateFormSubmit(evt) {
+
+    const url = $("#url").value;
+    const description = $("#description").value;
+
+    fetch('api/bookmarks', {
+        method: "POST",
+        body: JSON.stringify({url, description}),
+        headers: {"Content-type": "application/json; charset=UTF-8"}
+    }).then(readBookmarks).then(displayBookmarks);
+
+    evt.preventDefault();
 }

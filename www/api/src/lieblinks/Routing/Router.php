@@ -38,8 +38,8 @@ class Router extends BaseRouter{
         $action = new ActionData();
         $action->name = "create";
         $action->httpMethod = "POST";
-        $action->pattern = "api\/bookmarks\/([^\/]+)";
-        $action->paramNames = ["slug"];
+        $action->pattern = "api\/bookmarks";
+        $action->paramNames = [];
         $controller->actions[] = $action;
     
         $action = new ActionData();
