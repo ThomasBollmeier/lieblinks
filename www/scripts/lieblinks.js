@@ -47,12 +47,18 @@ function displayBookmarks(bookmarks) {
 
 function onCreateFormSubmit(evt) {
 
-    const url = $("#url").value;
-    const description = $("#description").value;
+    const $url = $("#url");
+    const $description = $("#description");
 
-    bookmarks.create(url, description)
+    //TODO: validation
+
+    bookmarks.create($url.value, $description.value)
         .then(bookmarks.readAll)
         .then(displayBookmarks);
+
+    // clear input
+    $url.value = "";
+    $description.value = "";
 
     evt.preventDefault();
 }
