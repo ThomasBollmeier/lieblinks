@@ -4,10 +4,10 @@ use TBollmeier\Lieblinks\Routing\Router;
 
 $httpMethod = $_SERVER["REQUEST_METHOD"];
 
-$url = "/api/".$_GET['url'];
+$url = "/api/".$_GET['api_url'];
 
 $queryParams = $_GET;
-unset($queryParams['url']);
+unset($queryParams['api_url']);
 $queryParamStr = implode("&", array_map(function ($key) use ($queryParams) {
     return $key."=".$queryParams[$key];
 }, array_keys($queryParams)));

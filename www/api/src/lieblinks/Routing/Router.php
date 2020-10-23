@@ -58,6 +58,18 @@ class Router extends BaseRouter{
     
         $routerData->controllers[] = $controller;
 
+        $controller = new ControllerData();
+        $controller->name = "PageInfoController";
+    
+        $action = new ActionData();
+        $action->name = "getTitle";
+        $action->httpMethod = "GET";
+        $action->pattern = "api\/page\/title";
+        $action->paramNames = [];
+        $controller->actions[] = $action;
+    
+        $routerData->controllers[] = $controller;
+
         $this->setUpHandlers($routerData);
     }
 }

@@ -7,4 +7,10 @@ controller BookmarkController
     end
 end
 
+controller PageInfoController
+    actions
+        getTitle <- get /api/page/title
+    end
+end
+
 default action HomeController#pageNotFound

@@ -2,23 +2,32 @@ const $ = selector => document.querySelector(selector);
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    readBookmarks().then(displayBookmarks);
+    bookmarks.readAll().then(displayBookmarks);
 
     $("#create-form").addEventListener("submit", onCreateFormSubmit);
 
-});
+    const $url = $("#url");
+    const $description = $("#description");
 
-function readBookmarks() {
-    return fetch("api/bookmarks").then(response => response.json());
-}
+    $url.focus();
+    $url.addEventListener("blur", () => {
+
+        if ($description.value != "") {
+            return;
+        }
+
+        getPageTitle($url.value).then((title) => {
+           $description.value = title;
+        });
+    });
+
+});
 
 function displayBookmarks(bookmarks) {
 
     const list = $('#lieblinks_list');
 
-    const children = [...list.childNodes];
-
-    for (let child of children) {
+    for (let child of [...list.childNodes]) {
         list.removeChild(child);
     }
 
@@ -41,11 +50,13 @@ function onCreateFormSubmit(evt) {
     const url = $("#url").value;
     const description = $("#description").value;
 
-    fetch('api/bookmarks', {
-        method: "POST",
-        body: JSON.stringify({url, description}),
-        headers: {"Content-type": "application/json; charset=UTF-8"}
-    }).then(readBookmarks).then(displayBookmarks);
+    bookmarks.create(url, description)
+        .then(bookmarks.readAll)
+        .then(displayBookmarks);
 
     evt.preventDefault();
+}
+
+function getPageTitle(url) {
+    return fetch(`api/page/title?url=${encodeURI(url)}`).then(res => res.text());
 }
