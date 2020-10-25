@@ -45,15 +45,15 @@ class Router extends BaseRouter{
         $action = new ActionData();
         $action->name = "update";
         $action->httpMethod = "PUT";
-        $action->pattern = "api\/bookmarks\/([^\/]+)";
-        $action->paramNames = ["slug"];
+        $action->pattern = "api\/bookmarks\/(\d+)";
+        $action->paramNames = ["bookmark_id"];
         $controller->actions[] = $action;
     
         $action = new ActionData();
         $action->name = "delete";
         $action->httpMethod = "DELETE";
-        $action->pattern = "api\/bookmarks\/([^\/]+)";
-        $action->paramNames = ["slug"];
+        $action->pattern = "api\/bookmarks\/(\d+)";
+        $action->paramNames = ["bookmark_id"];
         $controller->actions[] = $action;
     
         $routerData->controllers[] = $controller;

@@ -2,8 +2,8 @@ controller BookmarkController
     actions
         read <- get /api/bookmarks
         create <- post /api/bookmarks
-        update <- put /api/bookmarks/<slug>
-        delete <- delete /api/bookmarks/<slug>
+        update <- put /api/bookmarks/<bookmark_id:int>
+        delete <- delete /api/bookmarks/<bookmark_id:int>
     end
 end
 

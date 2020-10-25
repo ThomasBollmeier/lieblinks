@@ -11,21 +11,33 @@ class BookmarkController
 {
     public function read(http\Request $req, http\Response $res)
     {
-        $bookmarksJson = Bookmark::readAll();
+        $bookmarks = Bookmark::readAll();
+        $bookmarksData = array_map([$this, 'createBookmarkData'], $bookmarks);
 
         $res->setResponseCode(200);
         $res->setHeader("Content-Type", "application/json");
-        $res->setBody($bookmarksJson);
+        $res->setBody(json_encode($bookmarksData));
         $res->send();
+    }
+
+    private function createBookmarkData(Bookmark $bookmark) {
+        return [
+            'url' => $bookmark->getUrl(),
+            'description' => $bookmark->getDescription(),
+            'links' => [
+                'bookmark' => "api/bookmarks/" . $bookmark->getId()
+            ]
+        ];
     }
 
     public function create(http\Request $req, http\Response $res)
     {
         $data = json_decode($req->getBody());
-        Bookmark::create($data->url, $data->description);
-        Bookmark::saveAll();
+
+        $newBookmark = Bookmark::create($data->url, $data->description);
 
         $res->setResponseCode(201);
+        $res->setBody(json_encode($this->createBookmarkData($newBookmark)));
         $res->send();
     }
 
@@ -36,7 +48,10 @@ class BookmarkController
 
     public function delete(http\Request $req, http\Response $res)
     {
+        $bookmarkId = intval($req->getUrlParams()['bookmark_id']);
+        Bookmark::delete($bookmarkId);
 
+        $res->send();
     }
 
 }

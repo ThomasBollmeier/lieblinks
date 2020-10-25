@@ -17,9 +17,9 @@ class PageInfoController
 
         if ($html !== false) {
 
-            preg_match("#<title>([^<]+)</title>#m", $html, $matches);
+            preg_match("#<title[^>]*>([^<]+)</title>#m", $html, $matches);
 
-            if ($matches !== false) {
+            if (is_array($matches) && count($matches) > 1) {
                 $title = trim($matches[1]);
             }
 

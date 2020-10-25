@@ -1,18 +1,18 @@
 const $ = selector => document.querySelector(selector);
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
 
     bookmarks.readAll().then(displayBookmarks);
 
-    $("#create-form").addEventListener("submit", onCreateFormSubmit);
+    $('#create-form').addEventListener('submit', onCreateFormSubmit);
 
-    const $url = $("#url");
-    const $description = $("#description");
+    const $url = $('#url');
+    const $description = $('#description');
 
     $url.focus();
-    $url.addEventListener("blur", () => {
+    $url.addEventListener('blur', () => {
 
-        if ($description.value != "") {
+        if ($description.value != '') {
             return;
         }
 
@@ -23,32 +23,47 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-function displayBookmarks(bookmarks) {
+function displayBookmarks(bookmarkList) {
 
-    const list = $('#lieblinks_list');
+    const $list = $('#lieblinks_list');
 
-    for (let child of [...list.childNodes]) {
-        list.removeChild(child);
+    const $newList = document.createElement('ul');
+    $newList.setAttribute('id', 'lieblinks_list');
+
+    for (let bookmark of bookmarkList) {
+
+        const $li = document.createElement('li');
+        const $a = document.createElement('a');
+        $a.href = bookmark.url;
+        $a.title = bookmark.description;
+        $a.text = bookmark.url;
+        $li.appendChild($a);
+
+        const $descr = document.createTextNode(` (${bookmark.description}) `);
+        $li.appendChild($descr);
+
+        const $deleteBtn = document.createElement('button');
+        $deleteBtn.textContent = 'Delete';
+
+        $deleteBtn.addEventListener('click', () => {
+           bookmarks.remove(bookmark.links.bookmark).then(() => {
+              bookmarks.readAll().then(displayBookmarks);
+           });
+        });
+
+        $li.appendChild($deleteBtn);
+
+        $newList.appendChild($li);
     }
 
-    for (let bookmark of bookmarks) {
-        const li = document.createElement("li");
-        const a = document.createElement("a");
-        a.href = bookmark.url;
-        a.title = bookmark.description;
-        a.text = bookmark.url;
-        li.appendChild(a);
-        const info = document.createTextNode(` (${bookmark.description})`);
-        li.appendChild(info);
-        list.appendChild(li);
-    }
+    $list.parentNode.replaceChild($newList, $list);
 
 }
 
 function onCreateFormSubmit(evt) {
 
-    const $url = $("#url");
-    const $description = $("#description");
+    const $url = $('#url');
+    const $description = $('#description');
 
     //TODO: validation
 
@@ -57,8 +72,8 @@ function onCreateFormSubmit(evt) {
         .then(displayBookmarks);
 
     // clear input
-    $url.value = "";
-    $description.value = "";
+    $url.value = '';
+    $description.value = '';
 
     evt.preventDefault();
 }
