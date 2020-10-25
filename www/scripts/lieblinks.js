@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     $url.focus();
     $url.addEventListener('blur', () => {
 
-        if ($description.value != '') {
+        if ($description.value !== '') {
             return;
         }
 
@@ -30,7 +30,7 @@ function displayBookmarks(bookmarkList) {
     const $newList = document.createElement('ul');
     $newList.setAttribute('id', 'lieblinks_list');
 
-    for (let bookmark of bookmarkList) {
+    bookmarkList.forEach(bookmark => {
 
         const $li = document.createElement('li');
         const $a = document.createElement('a');
@@ -42,21 +42,31 @@ function displayBookmarks(bookmarkList) {
         const $descr = document.createTextNode(` (${bookmark.description}) `);
         $li.appendChild($descr);
 
-        const $deleteBtn = document.createElement('button');
-        $deleteBtn.textContent = 'Delete';
+        createButton($li, 'Ändern', () => {
 
-        $deleteBtn.addEventListener('click', () => {
-           bookmarks.remove(bookmark.links.bookmark).then(() => {
-              bookmarks.readAll().then(displayBookmarks);
-           });
+            alert(bookmark.links.bookmark);
+
         });
 
-        $li.appendChild($deleteBtn);
+        createButton($li, 'Löschen', () => {
+            bookmarks.remove(bookmark.links.bookmark).then(() => {
+                bookmarks.readAll().then(displayBookmarks);
+            });
+        });
 
         $newList.appendChild($li);
-    }
+    });
 
     $list.parentNode.replaceChild($newList, $list);
+}
+
+function createButton($parent, label, handler) {
+
+    const $btn = document.createElement('button');
+    $btn.textContent = label;
+    $btn.addEventListener('click', handler);
+
+    $parent.appendChild($btn);
 
 }
 
