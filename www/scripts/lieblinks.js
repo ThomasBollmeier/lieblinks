@@ -43,17 +43,19 @@ function displayBookmarks(bookmarkList) {
         $li.appendChild($descr);
 
         createButton($li, 'Ändern', () => {
-
-            alert(bookmark.links.bookmark);
-
+            //alert(bookmark.links.bookmark);
+            const newDescription = `${bookmark.description} (changed)`;
+            bookmarks.update(bookmark.links.bookmark, bookmark.url, newDescription)
+                .then(bookmarks.readAll)
+                .then(displayBookmarks);
         });
 
         createButton($li, 'Löschen', () => {
-            bookmarks.remove(bookmark.links.bookmark).then(() => {
-                bookmarks.readAll().then(displayBookmarks);
-            });
+            bookmarks.remove(bookmark.links.bookmark)
+                .then(bookmarks.readAll)
+                .then(displayBookmarks);
         });
-
+ 
         $newList.appendChild($li);
     });
 

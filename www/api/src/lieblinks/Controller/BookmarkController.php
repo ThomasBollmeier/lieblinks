@@ -43,6 +43,21 @@ class BookmarkController
 
     public function update(http\Request $req, http\Response $res)
     {
+        $bookmarkId = intval($req->getUrlParams()['bookmark_id']);
+        $data = json_decode($req->getBody());
+
+        $changedBookmark = Bookmark::update(
+            $bookmarkId,
+            $data->url,
+            $data->description);
+
+        if ($changedBookmark !== null) {
+            $res->setBody(json_encode($this->createBookmarkData($changedBookmark)));
+        } else {
+            $res->setResponseCode(404);
+        }
+
+        $res->send();
 
     }
 

@@ -47,6 +47,21 @@ class Bookmark
         return self::$instances;
     }
 
+    public static function read($id) {
+
+        if (self::$instances === null) {
+            self::readAll();
+        }
+
+        foreach (self::$instances as $bookmark) {
+            if ($bookmark->id === $id) {
+                return $bookmark;
+            }
+        }
+
+        return null;
+    }
+
     public static function create($url, $description)
     {
         $session = Session::getInstance();
@@ -61,6 +76,22 @@ class Bookmark
         }
 
         self::$instances[] = $ret;
+        self::saveAll();
+
+        return $ret;
+    }
+
+    public static function update($id, $newUrl, $newDescription) {
+
+        $ret = null;
+        $bookmark = self::read($id);
+
+        if ($bookmark !== null) {
+            $bookmark->url = $newUrl;
+            $bookmark->description = $newDescription;
+            $ret = $bookmark;
+        }
+
         self::saveAll();
 
         return $ret;
