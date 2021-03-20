@@ -55,7 +55,7 @@ function displayBookmarks(bookmarkList) {
                 .then(bookmarks.readAll)
                 .then(displayBookmarks);
         });
- 
+
         $newList.appendChild($li);
     });
 
